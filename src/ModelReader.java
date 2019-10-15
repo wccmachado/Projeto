@@ -23,7 +23,7 @@ public class ModelReader{
 			String line;
 			String propositionsLine = "";
 			String initialStateLine = "";
-			String constraintsLine = "";
+			//String constraintsLine = "";
 			String goalLine = "";
 			String preferencesLine = "";
 			String actionName = "";
@@ -42,14 +42,14 @@ public class ModelReader{
 				}
 				
 					
-				if(line.equals("<constraints>")){
+				/*if(line.equals("<constraints>")){
 					while(line.equals("<\\constraints>") == false){
 						line = in.readLine(); //<constraints><\constraints>
 						if(line.equals("<\\constraints>")) break;
 						constraintsLine = line;
 						cre.createConstraintBDD(constraintsLine);	
 					}
-				}
+				}*/
 				
 				// read the lines corresponding to the initial state
 				if(line.equals("<initial>")){

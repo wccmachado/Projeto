@@ -11,12 +11,13 @@ public class GUI {
 	 * and calls the backward search. */
 	public static void main(String[] args) throws IOException{
 		//File containing the description of the planning domain-problem 
-		String fileName = "MyExampleFileIn.txt";//args[0];
+		//String fileName = "AlwaysExampleFile.txt";//args[0];
+		String fileName = "SometimeExampleFile.txt";
 		String type = "propplan";//"ritanen" or "propplan" args[1] = 
 		int nodenum = 999999; //Integer.parseInt(args[2]);
 		int cachesize =  999999; //Integer.parseInt(args[3]);
 		
-		ModelReader model = new ModelReader();	
+		ModelReader model = new ModelReader();
 		model.fileReader(fileName, type, nodenum, cachesize);
 		
 		System.out.println(fileName.substring(fileName.lastIndexOf("/") + 1,fileName.lastIndexOf(".")));

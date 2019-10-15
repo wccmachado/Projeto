@@ -10,7 +10,7 @@ public class Regression{
 	//private Hashtable<Integer,String> varTable;
 	private BDD goalState;
 	//private BDD initialState;
-	private BDD constraints;
+	//private BDD constraints;
 	private BDD auxiliar;
 
 	/* Constructor */
@@ -18,7 +18,7 @@ public class Regression{
 		this.actionSet = model.getActionSet();
 		//this.initialState = model.getInitialStateBDD();
 		this.goalState = model.getGoalSpec();		
-		this.constraints = model.getConstraints();
+		//this.constraints = model.getConstraints();
 		this.preference = model.getPreference();
 		this.auxiliar = model.getAuxiliarBDD();
 	}
@@ -57,9 +57,9 @@ public class Regression{
 			reached = reached.or(Z); //Union with the new reachable states
 			aux.free();			
 			
-			aux = reached;
+			/*aux = reached;
 			reached = reached.and(constraints);
-			aux.free();
+			aux.free();*/
 			
 			i++;				
 		}
@@ -103,14 +103,14 @@ public class Regression{
 	public BDD regression(BDD formula) {
 		BDD reg = null;	
 		BDD teste = null;
-		BDD aux = null;
+		//BDD aux = null;
 		
 		for (Action a : actionSet) {
 			teste = regressionQbf(formula,a);
 			
-			aux = teste;
+			/*aux = teste;
 			teste = teste.and(constraints);
-			aux.free();
+			aux.free();*/
 			
 			if(reg == null){
 				reg = teste;
@@ -141,9 +141,9 @@ public class Regression{
 				System.out.println(a.getName());
 			}*/
 				
-			aux = reg;
+			/*aux = reg;
 			reg = reg.and(constraints);
-			aux.free();
+			aux.free();*/
 		}
 		
 		return  reg;
