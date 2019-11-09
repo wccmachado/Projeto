@@ -84,6 +84,7 @@ public class BDDCreator {
 	
 	public BDD createPreferenceBdd(String proposition) {
 		int index = varTable.get(proposition);
+		System.out.println("index: " + index);
 		return fac.ithVar(index);
 	}
 			
@@ -108,31 +109,35 @@ public class BDDCreator {
 	
 	/** Create a BDD representing the conjunction of the propositions in readLine */
 	public BDD createAndBdd(String readLine) {
+		//System.out.println("linha: " + readLine);
 		StringTokenizer tkn = new StringTokenizer(readLine, ",");
 		String tknPiece = tkn.nextToken().trim();
 		String prop; 
 		int index;
 		BDD bdd = null;
 		
-		if(tknPiece.startsWith("~")){
+		//System.out.println("tknPiece: " + tknPiece);
+		if(tknPiece.startsWith("~")) {
 			prop = tknPiece.substring(1); // without the signal ~
 			index = varTable.get(prop);
 			bdd = fac.nithVar(index);
-		}else{
+		} else {
 			index = varTable.get(tknPiece);
 			bdd = fac.ithVar(index);
 		}
 		while(tkn.hasMoreTokens()) {
 			tknPiece = tkn.nextToken();
-			if(tknPiece.startsWith("~")){
+			//System.out.println("tknPiece: " + tknPiece);
+			if(tknPiece.startsWith("~")) {
 				prop = tknPiece.substring(1);  // without the signal ~
 				index = varTable.get(prop);
 				bdd.andWith(fac.nithVar(index));
-			}else{
+			} else {
 				index = varTable.get(tknPiece);
 				bdd.andWith(fac.ithVar(index));
 			}
 		}
+		//System.out.println("bdd: " + bdd);
 		return bdd;
 	}
 	

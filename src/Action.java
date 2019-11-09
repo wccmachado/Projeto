@@ -25,29 +25,34 @@ public class Action {
 	//long timeEpc = 0;
 	
 	/*** Constructor ***/
-	public Action(String actionName, String preCond, String eff, BDDCreator cre, String pType){		
+	public Action(String actionName, String preCond, String eff, BDDCreator cre, String pType) {
+		//System.out.println(actionName);
+		//System.out.println(preCond);
+		//System.out.println(eff);
+		
 		varTable = cre.getVarTable2();
 		varTable2 = cre.getVarTable();
 
 		name = actionName;
 		
-		//System.out.println("precond");
+		//System.out.println("precond " + preCond);
 		precondition = cre.createAndBdd(preCond);
 		//precondition.printSet();
+		//System.out.println("precondition: " + precondition);
 		
 		effect = cre.createAndBdd(eff);
 		changeSet = createChangeSet(eff);
 		//precondition.printSet();
 		//effect.printSet();
 		
-		if(pType.equals("ritanen")){ //computes epc
+		if(pType.equals("ritanen")) { //computes epc
 			effectVec = cre.createBddVector(eff);
 			fillEpcTable();		
-		}else if(pType.equals("propplan")){ //compute change set	
-			for (String s : changeSet) {
-				if(change == null){
+		} else if(pType.equals("propplan")) { //compute change set	
+			for(String s : changeSet) {
+				if(change == null) {
 					change = cre.createAndBdd(s);
-				}else{
+				} else {
 					change.andWith(cre.createAndBdd(s));
 				}
 			}

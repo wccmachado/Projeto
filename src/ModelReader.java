@@ -23,7 +23,7 @@ public class ModelReader{
 			String line;
 			String propositionsLine = "";
 			String initialStateLine = "";
-			//String constraintsLine = "";
+			String constraintsLine = "";
 			String goalLine = "";
 			String preferencesLine = "";
 			String actionName = "";
@@ -37,35 +37,37 @@ public class ModelReader{
 				if(line.equals("<predicates>")){
 					line = in.readLine(); //read next line containing the propositions
 					propositionsLine = line;
-					line = in.readLine(); //read <\predicates>
+					//System.out.println(propositionsLine);
 					cre.initializeVarTable(propositionsLine);
+					line = in.readLine(); //read <\predicates>
 				}
-				
 					
-				/*if(line.equals("<constraints>")){
+				if(line.equals("<constraints>")){
 					while(line.equals("<\\constraints>") == false){
 						line = in.readLine(); //<constraints><\constraints>
 						if(line.equals("<\\constraints>")) break;
 						constraintsLine = line;
 						cre.createConstraintBDD(constraintsLine);	
 					}
-				}*/
+				}
 				
 				// read the lines corresponding to the initial state
 				if(line.equals("<initial>")){
 					//System.out.println("initial begin");
 					line = in.readLine(); //read next line containing the initial state specification
 					initialStateLine = line;
-					line = in.readLine(); // read the line <\initial>
+					//System.out.println(initialStateLine);
 					cre.createInitialStateBdd(initialStateLine);
+					line = in.readLine(); // read the line </initial>
 				}
 				
 				// read the lines corresponding to the planning goal
 				if(line.equals("<goal>")){
 					line = in.readLine(); //read next line
 					goalLine = line;
+					//System.out.println(goalLine);
 					cre.createGoalBdd(goalLine);
-					line = in.readLine();
+					line = in.readLine(); // read the line <\goal>
 				}
 				
 				if(line.equals("<preferences>")) {
@@ -77,6 +79,7 @@ public class ModelReader{
 					 * SOMETIME-<proposition label>
 					 */
 					
+					//System.out.println(preferencesLine);
 					if(preferencesLine.startsWith("ALWAYS")) {
 						preference = new Preference(Operator.ALWAYS, 
 								cre.createPreferenceBdd(preferencesLine.substring(7)));
@@ -91,27 +94,34 @@ public class ModelReader{
 				// read the lines corresponding to the actions
 				if(line.equals("<actionsSet>")){
 					line = in.readLine();
-					while(line.equals("<\\actionsSet>") == false){
-						if(line.trim().equals("<action>")){
+					while(line.equals("<\\actionsSet>") == false) {
+						//System.out.println(line);
+						if(line.trim().equals("<action>")) {
 							line = in.readLine(); //<name><\name>
-							actionName = line.substring(line.indexOf(">")+1, line.indexOf("\\") - 1);
+							//System.out.println(line);
+							actionName = line.substring(line.indexOf(">") + 1, line.indexOf("\\") - 1);
 							//System.out.println(actionName);
 							line = in.readLine(); //<pre><\pre>
-							actionPre = line.substring(line.indexOf(">")+1, line.indexOf("\\") - 1);
+							//System.out.println(line);
+							actionPre = line.substring(line.indexOf(">") + 1, line.indexOf("\\") - 1);
+							//System.out.println(actionPre);
 							line = in.readLine(); //<pos><\pos>
-							actionEff = line.substring(line.indexOf(">")+1, line.indexOf("\\") - 1);
-							Action action = new Action(actionName,actionPre,actionEff,cre, type);
-							cre.addAction(action);							
+							//System.out.println(line);
+							actionEff = line.substring(line.indexOf(">") + 1, line.indexOf("\\") - 1);
+							//System.out.println(actionEff);
+							Action action = new Action(actionName, actionPre, actionEff, cre, type);
+							//System.out.println("Ação: " + action);
+							cre.addAction(action);
 							line = in.readLine(); //<\action>
+							//System.out.println(line);
 							line = in.readLine(); //<action>
 						}
 					}
 				}
 			}
 			in.close();
-			
 		} catch (Exception e) {
-			System.out.println("catch");
+			//System.out.println("catch");
 			e.getMessage();
 		}		
 	}
