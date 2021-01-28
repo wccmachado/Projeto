@@ -9,13 +9,13 @@ import net.sf.javabdd.BDD;
 public class ModelReader{
 	
 	private BDDCreator cre;
-	private String type;
+	//private String type;
 	private Preference preference;
 	
 	//read the lines of the fileName. pType: model-checking or planner
-	public void fileReader(String fileName, String pType, int nodenum, int cachesize){
+	public void fileReader(String fileName, int nodenum, int cachesize){
 		
-		type = pType;
+		//type = pType;
 		cre = new BDDCreator(nodenum, cachesize);
 		
 		try {
@@ -128,9 +128,9 @@ public class ModelReader{
 		}		
 	}
 	
-	public String getType() {
+	/*public String getType() {
 		return type;
-	}
+	}*/
 	
 	public Hashtable<String,Integer> getVarTable() {
 		return cre.getVarTable();
