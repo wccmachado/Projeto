@@ -1,6 +1,6 @@
-import java.util.Hashtable;
-import java.util.StringTokenizer;
-import java.util.Vector;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import net.sf.javabdd.BDD;
 import net.sf.javabdd.BDDFactory;
@@ -21,15 +21,26 @@ public class Action {
 	Hashtable<Integer,BDD> epcPTable = new Hashtable<Integer, BDD>();
 	Hashtable<Integer,BDD> epcnotPTable = new Hashtable<Integer, BDD>();
 	Hashtable<Integer,String> varTable;
+	Hashtable<Integer,String> hstEffect = new Hashtable<>();
 	Hashtable<String,Integer> varTable2;
+	List<String> listEff = new ArrayList<String>();
 	//long timeEpc = 0;
-	
+
 	/*** Constructor ***/
 	public Action(String actionName, String preCond, String eff, BDDCreator cre, String pType) {
 		//System.out.println(actionName);
 		//System.out.println(preCond);
 		//System.out.println(eff);
-		
+
+		//getListEffect(eff);
+		//System.out.println("--->" + eff1);
+
+		if (eff.contains(":")) {
+			hstEffect = getListEffect(eff, "\\:");
+			eff = hstEffect.get(2);
+		}
+
+
 		varTable = cre.getVarTable2();
 		varTable2 = cre.getVarTable();
 
@@ -39,12 +50,17 @@ public class Action {
 		precondition = cre.createAndBdd(preCond);
 		//precondition.printSet();
 		//System.out.println("precondition: " + precondition);
-		
+		//System.out.println("Aqui 2"+ eff);
+		//hstEffect.forEach((k,v)->
+		//{
+		//	System.out.println();
+		//});
 		effect = cre.createAndBdd(eff);
 		changeSet = createChangeSet(eff);
 		//precondition.printSet();
 		//effect.printSet();
-		
+
+
 		if(pType.equals("ritanen")) { //computes epc
 			effectVec = cre.createBddVector(eff);
 			fillEpcTable();		
@@ -58,7 +74,43 @@ public class Action {
 			}
 		}
 	}
-	
+
+
+	public Hashtable<Integer, String> getListEffect(String eff , String regex){
+		Hashtable<Integer, String> hstEffectAux = new Hashtable<Integer, String>();
+		Pattern p = Pattern.compile(regex);
+		Matcher m = p.matcher(eff);
+		int count = 0;
+		int indiceInicial = 0;
+		if (m.find()) {
+			String aux = eff.substring(indiceInicial, m.start()).trim();
+			if (aux.length() != 0) {
+				hstEffectAux.put(count, aux);
+				++count;
+			}
+
+			//int indiceInicial;
+			for(indiceInicial = m.end(); m.find(); ++count) {
+				System.out.println(m.start());
+				hstEffectAux.put(count, eff.substring(indiceInicial, m.start()).trim());
+				indiceInicial = m.end();
+			}
+
+			if (indiceInicial != eff.length()) {
+				hstEffectAux.put(count++, eff.substring(indiceInicial, eff.length()).trim());
+			}
+		} else {
+			hstEffectAux.put(count, eff);
+		}
+
+		hstEffectAux.forEach((k, v) -> {
+			System.out.println("Key 1 : " + k + ", Value : " + v);
+		});
+
+		return hstEffectAux;
+	}
+
+
 	/**Creates the change set which is the union of all propositions involved in the effect list, without negation**/
 	public Vector<String> createChangeSet(String eff){
 		StringTokenizer tknEff = new StringTokenizer(eff, ",");

@@ -37,7 +37,7 @@ public class ModelReader{
 				if(line.equals("<predicates>")){
 					line = in.readLine(); //read next line containing the propositions
 					propositionsLine = line;
-					//System.out.println(propositionsLine);
+					//System.out.println("--->" + propositionsLine);
 					cre.initializeVarTable(propositionsLine);
 					line = in.readLine(); //read <\predicates>
 				}
@@ -79,7 +79,8 @@ public class ModelReader{
 					 * SOMETIME-<proposition label>
 					 */
 					
-					//System.out.println(preferencesLine);
+					//System.out.println("--->" + preferencesLine + "-----" + preferencesLine.charAt(9));
+
 					if(preferencesLine.startsWith("ALWAYS")) {
 						preference = new Preference(Operator.ALWAYS, 
 								cre.createPreferenceBdd(preferencesLine.substring(7)));
@@ -106,9 +107,10 @@ public class ModelReader{
 							actionPre = line.substring(line.indexOf(">") + 1, line.indexOf("\\") - 1);
 							//System.out.println(actionPre);
 							line = in.readLine(); //<pos><\pos>
-							//System.out.println(line);
+							//System.out.println("fulerage"+line);
 							actionEff = line.substring(line.indexOf(">") + 1, line.indexOf("\\") - 1);
-							//System.out.println(actionEff);
+
+							//System.out.println("Veja "+actionEff);
 							Action action = new Action(actionName, actionPre, actionEff, cre, type);
 							//System.out.println("Ação: " + action);
 							cre.addAction(action);

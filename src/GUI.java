@@ -29,7 +29,8 @@ public class GUI {
 				String type = "propplan";//"ritanen" or "propplan" args[1] = 
 				int nodenum = 999999; //Integer.parseInt(args[2]);
 				int cachesize =  999999; //Integer.parseInt(args[3]);
-				
+
+
 				ModelReader model = new ModelReader();
 				model.fileReader(fileCanonicalPath, type, nodenum, cachesize);
 				
@@ -43,7 +44,7 @@ public class GUI {
 					BDD result = r.run();
 					long elapsed = System.currentTimeMillis() - start;
 					System.out.println("Tempo de execução: " + elapsed + "ms");
-					System.out.println("BDD resultado: " + result);
+					//System.out.println("BDD resultado: " + result);
 					//cont++;
 				} catch(OutOfMemoryError e) {
 					System.out.println("Deu ruim: " + e.getMessage());

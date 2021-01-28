@@ -57,8 +57,10 @@ public class BDDCreator {
 	
 	/*[input: just the actions] Initializes the BDD variables table with the propositions, propositions primed and actions*/
 	public void initializeVarTable(String propLine) throws IOException {
-		StringTokenizer tknProp = new StringTokenizer(propLine, ",");	
+		StringTokenizer tknProp = new StringTokenizer(propLine, ",");
+
 		propNum = tknProp.countTokens(); //Propositions
+		System.out.println("quantidade de proposições : " + propNum);
 		fac.setVarNum(propNum);
 		
 		//Filling the table positions corresponding to the propositions
@@ -109,9 +111,9 @@ public class BDDCreator {
 	
 	/** Create a BDD representing the conjunction of the propositions in readLine */
 	public BDD createAndBdd(String readLine) {
-		//System.out.println("linha: " + readLine);
 		StringTokenizer tkn = new StringTokenizer(readLine, ",");
 		String tknPiece = tkn.nextToken().trim();
+		//System.out.println("modelReader "+ tknPiece);
 		String prop; 
 		int index;
 		BDD bdd = null;
