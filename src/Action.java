@@ -5,6 +5,7 @@ import java.util.regex.Pattern;
 import net.sf.javabdd.BDD;
 import net.sf.javabdd.BDDFactory;
 
+// Alterado Aqui novamente !!!!!!!!!!
 public class Action {
 	private String name;
 	private BDD precondition;
